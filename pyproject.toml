@@ -1,0 +1,9 @@
+[project]
+name = "agriassist"
+version = "0.1.0"
+description = "Evidence-grounded agricultural advisory and follow-up agent"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
