@@ -7,8 +7,9 @@ Farmers may receive agricultural recommendations but still need to determine whi
 Build a bounded agent that collects relevant context, identifies missing information, retrieves guidance from a curated collection of verified agricultural sources, generates an evidence-grounded action plan, records farmer-reported actions, and tracks subsequent observations.
 
 ## Initial scope
-- Primary crop: paddy/rice.
-- Initial region: coastal Karnataka, with local relevance verified during Week 1.
+- Supported crop: paddy (rice) only.
+- Target region: coastal Karnataka, India, with local relevance verified during Week 1.
+- Other crops are outside the current MVP scope and must not receive agricultural advice from AgriAssist. The architecture may be extended to other crops in a future version.
 - Interface: English-first, with a limited Kannada interaction path to be evaluated.
 - Local-first inference to respect a zero AI API budget.
 - Persistent case memory in SQLite.
@@ -17,7 +18,8 @@ Build a bounded agent that collects relevant context, identifies missing informa
 ## Out of scope
 - Autonomous pesticide prescriptions or invented application rates.
 - Image-based diagnosis.
-- Nationwide, multi-crop coverage.
+- Any crop other than paddy (rice) in the current MVP.
+- Nationwide coverage beyond the initial coastal Karnataka target.
 - Claims of proven field impact.
 
 ## Safety

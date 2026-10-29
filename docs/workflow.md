@@ -1,5 +1,7 @@
 # Advisory Workflow
 
+This workflow applies to paddy (rice) cases in coastal Karnataka, India. Other crops are outside the current MVP scope and must not receive agricultural advice. The architecture may be extended to support other crops in a future version.
+
 1. Create a case from the farmer's report.
 2. Collect relevant crop and symptom context.
 3. Identify missing information and ask targeted questions.

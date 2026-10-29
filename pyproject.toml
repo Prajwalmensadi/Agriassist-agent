@@ -1,8 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "agriassist"
 version = "0.1.0"
 description = "Evidence-grounded agricultural advisory and follow-up agent"
 requires-python = ">=3.11"
+dependencies = [
+    "chromadb>=1.0",
+    "ollama>=0.4.7",
+    "PyMuPDF>=1.24",
+    "pydantic>=2.7",
+    "streamlit>=1.30",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

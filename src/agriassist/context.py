@@ -39,7 +39,7 @@ class CropContext(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
     location: str | None = Field(default=None, description="Farm region or locality; no exact address needed.")
-    crop: str | None = Field(default=None, description="Crop name, such as paddy or rice.")
+    crop: str | None = Field(default=None, description="Supported crop: paddy (rice).")
     growth_stage: GrowthStage | None = None
     symptoms: list[str] | None = Field(default=None, description="Observed symptoms, without diagnosis.")
     symptom_distribution: SymptomDistribution | None = None
@@ -49,12 +49,27 @@ class CropContext(BaseModel):
     )
     symptom_duration: str | None = Field(default=None, description="How long symptoms have been present, if known.")
 
-    @field_validator("location", "crop", "symptom_duration", mode="before")
+    @field_validator("location", "symptom_duration", mode="before")
     @classmethod
     def blank_text_is_unset(cls, value: Any) -> Any:
         if isinstance(value, str) and not value.strip():
             return None
         return value
+
+    @field_validator("crop", mode="before")
+    @classmethod
+    def normalize_supported_crop(cls, value: Any) -> Any:
+        if value is None:
+            return None
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("crop must be 'paddy' or 'rice'; empty crop names are not allowed")
+
+        normalized = value.strip().casefold()
+        if normalized not in {"paddy", "rice"}:
+            raise ValueError(
+                f"unsupported crop '{value.strip()}'; AgriAssist currently supports paddy (rice) only"
+            )
+        return "paddy"
 
     @field_validator("symptoms", mode="before")
     @classmethod

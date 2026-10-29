@@ -84,7 +84,6 @@ def test_explicitly_unknown_growth_stage_is_not_reasked():
 def test_whitespace_values_are_treated_as_unset():
     context = CropContext(
         location="  ",
-        crop=" \t",
         symptoms=[" ", "\n"],
         symptom_duration=" ",
     )
@@ -102,6 +101,28 @@ def test_whitespace_values_are_treated_as_unset():
 def test_invalid_growth_stage_is_rejected():
     with pytest.raises(ValidationError):
         CropContext(growth_stage="fruiting")
+
+
+@pytest.mark.parametrize("crop", ["paddy", "PADDY", "PaDdY"])
+def test_paddy_crop_is_accepted_case_insensitively(crop):
+    assert CropContext(crop=crop).crop == "paddy"
+
+
+@pytest.mark.parametrize("crop", ["rice", "RICE", "RiCe"])
+def test_rice_crop_is_normalized_to_paddy_case_insensitively(crop):
+    assert CropContext(crop=crop).crop == "paddy"
+
+
+@pytest.mark.parametrize("crop", ["tomato", "coconut"])
+def test_unsupported_crops_are_rejected_with_scope_error(crop):
+    with pytest.raises(ValidationError, match=r"currently supports paddy \(rice\) only"):
+        CropContext(crop=crop)
+
+
+@pytest.mark.parametrize("crop", ["", "  ", "\t\n"])
+def test_empty_crop_names_are_rejected(crop):
+    with pytest.raises(ValidationError, match="empty crop names are not allowed"):
+        CropContext(crop=crop)
 
 
 def test_crop_and_symptom_report_is_retrievable_without_diagnosis():
